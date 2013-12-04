@@ -37,7 +37,7 @@ newtype MiuExpr = MiuExpr [MiuAtom]
 ruleAll :: MiuExpr -> Set (MiuExpr, Rule)
 ruleAll (MiuExpr mui) = (Set.fromList . mapMaybe applyRule . splits) mui
       where
-            applyRule (xs, I:[])     = Just (MiuExpr (xs ++ [U]            ) , PU)
+            applyRule (xs, [I])      = Just (MiuExpr (xs ++ [I,U]          ) , PU)
             applyRule (xs, U:U:ys)   = Just (MiuExpr (xs ++ ys             ) , UU)
             applyRule (xs, M:ys)     = Just (MiuExpr (xs ++ [M] ++ ys ++ ys) , MX)
             applyRule (xs, I:I:I:ys) = Just (MiuExpr (xs ++ [U] ++ ys      ) , III)
