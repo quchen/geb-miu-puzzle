@@ -69,10 +69,11 @@ splits xs = zip (inits xs) (tails xs)
 data Graph = Graph (Set Node)
                    (Set Node)
                    (Set Edge)
+      deriving (Eq, Ord, Show)
 
 type Node = MiuExpr
 data Edge = Edge Node Node Rule
-      deriving (Eq, Ord)
+      deriving (Eq, Ord, Show)
 
 
 
@@ -87,7 +88,8 @@ growGraph :: Int -> Graph -> Graph
 growGraph limit (Graph unvisited visited edges) = Graph unvisited' visited' edges'
       where
             -- New edges: grow all nodes and flatten the structure
-            edges' = (constrainLength . F.fold) (Set.map growNode unvisited)
+            edges' = edges <> newEdges
+            newEdges = (constrainLength . F.fold) (Set.map growNode unvisited)
             constrainLength = Set.filter underLimit
             underLimit (Edge _ (MiuExpr mui) _) = length mui <= limit
 
@@ -146,16 +148,17 @@ addBoilerplate body = unlines
       , "#define uu  [color = orangered, labelfontcolor = orangered]"
       , "#define iii [color = orange, labelfontcolor = orange]"
       , "digraph G {"
-      , "node [shape = box, color = gray, fontname = \"Courier\"];"
-      , "MI [color = skyblue, style = filled];"
-      , "MU [color = skyblue, style = filled];"
-      , "subgraph cluster_legend {"
-      , "\tlabel = \"Legend\";"
-      , "\tMx -> Mxx mx;"
-      , "\tMxIIIy -> MxUy iii;"
-      , "\tMxI -> MxIU pu;"
-      , "\tMxUUy -> Mxy uu;"
-      , "}"
+      , "\tnode [shape = box, color = gray, fontname = \"Courier\"];"
+      , "\tMI [color = skyblue, style = filled];"
+      , "\tMU [color = skyblue, style = filled];"
+      , "\tsubgraph cluster_legend {"
+      , "\t\tlabel = \"Legend\";"
+      , "\t\tMx -> Mxx mx;"
+      , "\t\tMxIIIy -> MxUy iii;"
+      , "\t\tMxI -> MxIU pu;"
+      , "\t\tMxUUy -> Mxy uu;"
+      , "\t}"
+      , ""
       , body
       , "}"
       ]
