@@ -1,0 +1,39 @@
+digraph G {
+	node [shape = box, color = gray, fontname = "Courier"];
+	MI [color = skyblue, style = filled];
+	MU [color = skyblue, style = filled];
+	subgraph cluster_legend {
+		label = "Legend";
+		Mx -> Mxx [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+		MxIIIy -> MxUy [label = iii, color = orange,      labelfontcolor = orange];
+		MxI -> MxIU [label = pu,  color = green4,      labelfontcolor = green4];
+		MxUUy -> Mxy [label = uu,  color = orangered,   labelfontcolor = orangered];
+	}
+
+	MI -> MII [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+	MI -> MIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MII -> MIIII [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+	MII -> MIIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MIIII -> MIIIIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MIIII -> MIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIII -> MUI [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIU -> MIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIU -> MUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIU -> MIIUIIU [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+	MIIUU -> MII [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MIU -> MIUIU [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+	MIUU -> MI [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MIUU -> MIUUIUU [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+	MIUUI -> MII [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MIUUI -> MIUUIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MIUUIU -> MIIU [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MIUUIUU -> MIIUU [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MIUUIUU -> MIUUI [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MUI -> MUIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MUI -> MUIUI [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+	MUIU -> MUIUUIU [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
+	MUIUI -> MUIUIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MUIUUIU -> MUIIU [label = uu,  color = orangered,   labelfontcolor = orangered];
+
+}
+
