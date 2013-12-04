@@ -1,12 +1,12 @@
 GEB MIU-puzzle graphs
 =====================
 
-(Written around the end of 2012.)
+(Initially written around the end of 2012.)
 
 The problem
 -----------
 
-In Douglas Hofstadter's book *Gödel, Escher, Bach*, he presents the reader a puzzle:
+In Douglas Hofstadter's book *Gödel, Escher, Bach*, the reader is presented the following puzzle:
 
 There are words consisting of the letters `M`, `I` and `U`. A word can be transformed into another word using one of four rules:
 
@@ -26,10 +26,8 @@ The puzzle is to start with the word `MI`, and to try to find a series of applic
 The program
 -----------
 
-(Spoilers!)
-
 What the program does is simply taking a word, and producing the set of all possible words that can follow from this word in one step. It then does this procedure recursively, keeping track of how each word can be reached. The whole thing is aggregated into a graph showing all the correspondences, with the colour of the arrows indicating the applied rule.
 
 The generated graphs, `miu*.png`, picture these graphs when all words and rules up to a certain length have been tried. Therefore, `miu8.png` will only show words up to length 8. (You'll notice that the longest word here is only 7 long though - that's because in order to create a 8-long word, you have to produce longer intermediate ones.)
 
-Apart from the fact that the graph grows quickly as words get longer, it looks like `MU` is still its own lonely cell, unconnected to `MI`.
+The program is significantly faster than actually plotting its output, so it was not optimized any further.
