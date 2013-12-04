@@ -3,150 +3,166 @@ import Data.List
 import Data.Maybe
 import Text.Printf
 import Data.Set (Set)
-import qualified Data.Set as S
+import qualified Data.Set as Set
+import qualified Data.Foldable as F
 
-data MUIAtom = I | M | U
+-- | Letters in the MIU alphabet.
+--
+--   Although not necessary in the book since all words start with "M" and have
+--   no other "M", it is encoded here explicitly to make the program more
+--   flexible.
+data MUIAtom = M | I | U
       deriving (Eq, Ord, Show)
 
-data Reduce = MX | PU | UU | III
+-- | Used to tag reduction steps.
+data Rule = MX  -- ^ Mx   -> Mxx  ("duplicate")
+          | PU  -- ^ xI   -> xIU  (PU = "produce U")
+          | UU  -- ^ xUUy -> xy   ("eliminate double U")
+          | III -- ^ xIIIy -> xUy ("convert triple I")
+      deriving (Eq, Ord, Show)
+
+newtype MuiExpr = MuiExpr [MUIAtom]
+      deriving (Eq, Ord, Show)
+
+
+
+-- | Calculate all "MuiExpr"s that can be obtained by applying one rule once.
+--
+--   The result may contain duplicate entries, for example reducing "U""U""U"
+--   yields one entry for eliminating each pair.
+ruleAll :: MuiExpr -> Set (MuiExpr, Rule)
+ruleAll (MuiExpr mui) = (Set.fromList . mapMaybe applyRule . splits) mui
+      where
+            applyRule (xs, I:[])     = Just (MuiExpr (xs ++ [U]            ) , PU)
+            applyRule (xs, U:U:ys)   = Just (MuiExpr (xs ++ ys             ) , UU)
+            applyRule (xs, M:ys)     = Just (MuiExpr (xs ++ [M] ++ ys ++ ys) , MX)
+            applyRule (xs, I:I:I:ys) = Just (MuiExpr (xs ++ [U] ++ ys      ) , III)
+            applyRule _              = Nothing
+
+
+
+-- | List of all possible ways cut a list in two pieces.
+--
+--   > splits [1..5] ==
+--   >    [ [[],[1,2,3,4,5]]
+--   >    , [[1], [2,3,4,5]]
+--   >    , [[1,2], [3,4,5]]
+--   >    , [[1,2,3], [4,5]]
+--   >    , [[1,2,3,4], [5]]
+--   >    , [[1,2,3,4,5],[]]
+--   >    ]
+splits :: [a] -> [([a],[a])]
+splits xs = zip (inits xs) (tails xs)
+
+-- ==================
+
+
+-- | A graph consists of:
+--
+--   1. A set of unvisited nodes
+--   2. A set of already visited nodes
+--   3. A set of edges
+data Graph = Graph (Set Node)
+                   (Set Node)
+                   (Set Edge)
+
+newtype Node = Node MuiExpr
+      deriving (Eq, Ord)
+data Edge = Edge MuiExpr MuiExpr Rule
       deriving (Eq, Ord)
 
-instance Show Reduce where
-      show MX  = "mx"
-      show PU  = "pu"
-      show UU  = "uu"
-      show III = "iii"
-
-data MUIExpr = MUIExpr [MUIAtom]
-      deriving (Eq, Ord)
-
--- [M,U,I] -> "MUI"
-instance Show MUIExpr where
-      show (MUIExpr x) = x >>= show
-
--- | Generates all possible outgoing edges from MUIExpr
-ruleAll :: MUIExpr -> [Edge]
-ruleAll (MUIExpr  []) = []
-ruleAll mui           = ($ mui) =<< [ ruleAppendU
-                                    , ruleDuplicateM
-                                    , ruleReduceUU
-                                    , ruleReduceIII
-                                    ]
-
--- | Applies the "append U" rule.
---   "If the string ends with I, you may append U."
-ruleAppendU :: MUIExpr -> [Edge]
-ruleAppendU (MUIExpr []) = []
-ruleAppendU mui@(MUIExpr xs) | last xs == I = [Edge (mui, MUIExpr $ xs ++ [U], PU)]
-                             | otherwise    = []
-
--- | Applies the duplication rule.
---   "You may replace Mx with Mxx."
-ruleDuplicateM :: MUIExpr -> [Edge]
-ruleDuplicateM mui@(MUIExpr (M:xs)) = [Edge (mui, MUIExpr $ M : xs ++ xs, MX)]
-ruleDuplicateM _                    = []
-
--- | Applies U reduction.
---   "You may cancel out UU."
-ruleReduceUU :: MUIExpr -> [Edge]
-ruleReduceUU mui@(MUIExpr xs) = map makeEdge $ mapMaybe removeUU (splits xs)
-      where removeUU [ys, U:U:zs] = Just . MUIExpr $ ys ++ zs
-            removeUU _            = Nothing
-            makeEdge ys = Edge (mui, ys, UU)
-
--- | Applies III reduction.
---   "You may replace III with U."
-ruleReduceIII :: MUIExpr -> [Edge]
-ruleReduceIII mui@(MUIExpr xs) = map makeEdge $ mapMaybe replaceIII (splits xs)
-      where replaceIII [ys, I:I:I:zs] = Just . MUIExpr $ ys ++ [U] ++ zs
-            replaceIII _              = Nothing
-            makeEdge ys = Edge (mui, ys, III)
-
--- splits [1..5] ==
---     [ [[],[1,2,3,4,5]]
---     , [[1], [2,3,4,5]]
---     , [[1,2], [3,4,5]]
---     , [[1,2,3], [4,5]]
---     , [[1,2,3,4], [5]]
---     , [[1,2,3,4,5],[]]
---     ]
-splits :: [a] -> [[[a]]]
-splits xs = transpose [inits xs, tails xs]
 
 
-data Graph = Graph (Set Edge)
-      deriving (Eq, Ord)
+-- | Construct all outgoing edges from a given start node
+growNode :: Node -> Set Edge
+growNode from = Set.map toEdge (ruleAll from)
+      toEdge (miu, rule) = Edge from miu rule
 
-instance Show Graph where
-      show (Graph g) = intercalate "\n" . map show . S.toList $ g
 
-data Edge = Edge (MUIExpr, MUIExpr, Reduce)
-      deriving (Eq, Ord)
+-- | Grow each unvisited node in a graph
+growGraph :: Int -> Graph -> Graph
+growGraph limit (Graph unvisited visited edges) = Graph unvisited' visited' edges'
+      where
+            -- New edges: grow all nodes and flatten the structure
+            edges' = (constrainLength . F.fold) (Set.map growNode unvisited)
+            constrainLength = Set.filter underLimit
+            underLimit (Edge _ (MuiExpr mui) _) = length mui <= limit
 
-instance Show Edge where
-      show (Edge (start, end, t)) = printf "%s -> %s %s;" (show start)
-                                                          (show end)
-                                                          (show t)
+            -- Add unvisited nodes to the visited ones
+            visited' = unvisited <> visited
 
--- | Grows a graph by evaluating rules for all end notes
-graphGrow :: Int -> Graph -> Graph
-graphGrow maxLength g@(Graph edges) = Graph $ edges `S.union` S.fromList newEdgesFiltered
-      where ends = quickNub . S.toList $ endNodes g
-            newEdges = ends >>= ruleAll
-            newEdgesFiltered = filter constrainLength newEdges
-            constrainLength (Edge (_, MUIExpr xs, _)) | length xs <= maxLength = True
-                                                      | otherwise              = False
-            quickNub = map head . group . sort
+            -- New unvisited nodes: all edge end points that are not visited'
+            unvisited' = Set.map getEnd edges' `Set.difference` visited'
+            getEnd (Edge _ e _) = e
 
--- | List of all nodes pointed to in the graph
-endNodes :: Graph -> Set MUIExpr
-endNodes (Graph edges) = S.map (\ ~(Edge (_,x,_)) -> x) edges
 
--- | Calculates x so that f x == x. Bottom if no such x exists.
-fixedPoint :: (Eq a) => (a -> a) -> a -> a
-fixedPoint f x | fx == x = x
-               | otherwise = fixedPoint f fx
-               where fx = f x
 
--- | Deletes the first edge that is required as a seed to grow the graph
-deleteStartEdge :: Graph -> Graph
-deleteStartEdge (Graph edges) = Graph (S.filter notFirstEdge edges)
-      where notFirstEdge (Edge (MUIExpr [M,M], _, _)) = False
-            notFirstEdge _                            = True
+-- | Grow a graph until no unvisited nodes remain
+growAll limit g = let g'@(Graph n _ _ ) = growGraph limit g
+                  in  if Set.null n then g' else growAll limit g'
 
-startGraph :: Graph
-startGraph = Graph . S.singleton $ Edge (MUIExpr [M,M], MUIExpr [M,I], MX)
 
--- | Because my platform version library doesn't have it yet :-(
-readMaybe :: Read a => String -> Maybe a
-readMaybe s = case reads s of []      -> Nothing
-                              (a,_):_ -> Just a
+-- | Starting point of the book's puzzle
+gebStartGraph = Graph (Set.singleton (MuiExpr [M,I])) Set.empty Set.empty
 
-addBoilerplate :: IO a -> IO ()
-addBoilerplate io = do
-      putStrLn "#define mx  [color = greenyellow, labelfontcolor = greenyellow]"
-      putStrLn "#define pu  [color = green4, labelfontcolor = green4]"
-      putStrLn "#define uu  [color = orangered, labelfontcolor = orangered]"
-      putStrLn "#define iii [color = orange, labelfontcolor = orange]"
-      putStrLn "digraph G {"
-      putStrLn "node [shape = box, color = gray, fontname = \"Courier\"];"
-      putStrLn "MI [color = skyblue, style = filled];"
-      putStrLn "MU [color = skyblue, style = filled];"
-      putStrLn "subgraph cluster_legend {"
-      putStrLn "\tlabel = \"Legend\";"
-      putStrLn "\tMx -> Mxx mx;"
-      putStrLn "\tMxIIIy -> MxUy iii;"
-      putStrLn "\tMxI -> MxIU pu;"
-      putStrLn "\tMxUUy -> Mxy uu;"
-      putStrLn "}"
-      io
-      putStrLn "}"
+
+-- ==================
+
+
+-- | Like "Show", but for printing data in the Dot file format.
+class ToDot a where
+      toDot :: a -> String
+
+instance ToDot Graph where
+      toDot (Graph _ _ edges) = Set.map toDot edges
+
+instance ToDot Edge where
+      toDot (Edge start end rule) =
+            printf "\t%s -> %s %s;\n" (toDot start)
+                                      (toDot end)
+                                      (toDot t)
+
+instance ToDot MiuExpr where
+      toDot (MiuExpr miu) = concatMap toDot miu
+
+instance ToDot MiuAtom where
+      toDot M = "M"
+      toDot I = "I"
+      toDot U = "U"
+
+instance ToDot Rule where
+      toDot MX  = "mx"
+      toDot PU  = "pu"
+      toDot UU  = "uu"
+      toDot III = "iii"
+
+addBoilerplate :: String -> String
+addBoilerplate body = unlines
+      [ "#define mx  [color = greenyellow, labelfontcolor = greenyellow]"
+      , "#define pu  [color = green4, labelfontcolor = green4]"
+      , "#define uu  [color = orangered, labelfontcolor = orangered]"
+      , "#define iii [color = orange, labelfontcolor = orange]"
+      , "digraph G {"
+      , "node [shape = box, color = gray, fontname = \"Courier\"];"
+      , "MI [color = skyblue, style = filled];"
+      , "MU [color = skyblue, style = filled];"
+      , "subgraph cluster_legend {"
+      , "\tlabel = \"Legend\";"
+      , "\tMx -> Mxx mx;"
+      , "\tMxIIIy -> MxUy iii;"
+      , "\tMxI -> MxIU pu;"
+      , "\tMxUUy -> Mxy uu;"
+      , "}"
+      , body
+      , "}"
+
+-- ==================
+
 
 main :: IO ()
 main = do
       args <- getArgs
-      let -- Read first command line parameter for max length; default = 8
-          maxLength = fromMaybe 8 $ readMaybe =<< listToMaybe args
-          graphFix = fixedPoint (graphGrow maxLength) startGraph
-      addBoilerplate . print . deleteStartEdge $ graphFix
-
+      case readMaybe =<< listToMaybe of
+            Just limit -> do
+                  (putStrLn . addBoiletplate . toDot) (growAll limit gebStartGraph)
+            _ -> putStrLn "Expecting Int parameter for maximum word length"
