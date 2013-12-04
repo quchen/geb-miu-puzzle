@@ -7,9 +7,11 @@ import Text.Read
 import Data.Maybe
 
 import MiuGraph
-import Export.GraphVizDot
+import Export.Dot
 
 main :: IO ()
-main = getArgs >>= listToMaybe >>= readMaybe >>= \case
-      Just limit -> (putStrLn . gvDot) (growAll limit gebStartGraph)
-      _ -> putStrLn "Expecting Int parameter for maximum word length"
+main = do
+      args <- getArgs
+      case listToMaybe args >>= readMaybe of
+            Just limit -> (putStrLn . gvDot) (growAll limit gebStartGraph)
+            _ -> putStrLn "Expecting Int parameter for maximum word length"
