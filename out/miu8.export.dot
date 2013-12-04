@@ -1,15 +1,4 @@
 digraph G {
-	node [shape = box, color = gray, fontname = "Courier"];
-	MI [color = skyblue, style = filled];
-	MU [color = skyblue, style = filled];
-	subgraph cluster_legend {
-		label = "Legend";
-		Mx -> Mxx [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
-		MxIIIy -> MxUy [label = iii, color = orange,      labelfontcolor = orange];
-		MxI -> MxIU [label = pu,  color = green4,      labelfontcolor = green4];
-		MxUUy -> Mxy [label = uu,  color = orangered,   labelfontcolor = orangered];
-	}
-
 	MI -> MII [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
 	MI -> MIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MII -> MIIII [label = mx,  color = greenyellow, labelfontcolor = greenyellow];

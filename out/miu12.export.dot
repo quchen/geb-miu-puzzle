@@ -1,15 +1,4 @@
 digraph G {
-	node [shape = box, color = gray, fontname = "Courier"];
-	MI [color = skyblue, style = filled];
-	MU [color = skyblue, style = filled];
-	subgraph cluster_legend {
-		label = "Legend";
-		Mx -> Mxx [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
-		MxIIIy -> MxUy [label = iii, color = orange,      labelfontcolor = orange];
-		MxI -> MxIU [label = pu,  color = green4,      labelfontcolor = green4];
-		MxUUy -> Mxy [label = uu,  color = orangered,   labelfontcolor = orangered];
-	}
-
 	MI -> MII [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
 	MI -> MIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MII -> MIIII [label = mx,  color = greenyellow, labelfontcolor = greenyellow];
@@ -23,6 +12,12 @@ digraph G {
 	MIIIII -> MIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIII -> MIUI [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIII -> MUII [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIII -> MIIIIIIIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MIIIIIII -> MIIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIII -> MIIIUI [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIII -> MIIUII [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIII -> MIUIII [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIII -> MUIIII [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIII -> MIIIIIIIIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MIIIIIIII -> MIIIIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIII -> MIIIIUI [label = iii, color = orange,      labelfontcolor = orange];
@@ -30,6 +25,7 @@ digraph G {
 	MIIIIIIII -> MIIUIII [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIII -> MIUIIII [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIII -> MUIIIII [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIII -> MIIIIIIIIIIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MIIIIIIIIII -> MIIIIIIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIIII -> MIIIIIIUI [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIIII -> MIIIIIUII [label = iii, color = orange,      labelfontcolor = orange];
@@ -38,6 +34,14 @@ digraph G {
 	MIIIIIIIIII -> MIIUIIIII [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIIII -> MIUIIIIII [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIIII -> MUIIIIIII [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MIIIIIIIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MIIIIIIUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MIIIIIUIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MIIIIUIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MIIIUIIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MIIUIIIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MIUIIIIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIIIIU -> MUIIIIIIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIIU -> MIIIIIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIIU -> MIIIIUIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIIU -> MIIIUIIU [label = iii, color = orange,      labelfontcolor = orange];
@@ -49,6 +53,12 @@ digraph G {
 	MIIIIIIIU -> MIIUIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIU -> MIUIIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIIU -> MUIIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIUU -> MIIIIIII [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MIIIIIIIUU -> MIIIIUUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIUU -> MIIIUIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIUU -> MIIUIIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIUU -> MIUIIIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIIIIIUU -> MUIIIIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIUI -> MIIIIIIUIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MIIIIIIUI -> MIIIUUI [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIIIIUI -> MIIUIUI [label = iii, color = orange,      labelfontcolor = orange];
@@ -115,9 +125,13 @@ digraph G {
 	MIIIUIIIIU -> MIIIUIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIUIIIIU -> MIIIUUIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIUIIIIU -> MUUIIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIUIIIIUI -> MIIIUIIIIUIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MIIIUIIIIUI -> MIIIUIUUI [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIUIIIIUI -> MIIIUUIUI [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIUIIIIUI -> MUUIIIIUI [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIUIIIIUIU -> MIIIUIUUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIUIIIIUIU -> MIIIUUIUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIIUIIIIUIU -> MUUIIIIUIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIUIIU -> MUUIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIUIU -> MUUIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIIUIUU -> MIIIUI [label = uu,  color = orangered,   labelfontcolor = orangered];
@@ -149,8 +163,11 @@ digraph G {
 	MIIUIIIIIU -> MIIUIIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIUIIIIIU -> MIIUIUIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIUIIIIIU -> MIIUUIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIUIIIIUII -> MIIUIIIIUIIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MIIUIIIIUII -> MIIUIUUII [label = iii, color = orange,      labelfontcolor = orange];
 	MIIUIIIIUII -> MIIUUIUII [label = iii, color = orange,      labelfontcolor = orange];
+	MIIUIIIIUIIU -> MIIUIUUIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIIUIIIIUIIU -> MIIUUIUIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIUIIIU -> MIIUUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIIUIIUU -> MIIUII [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MIIUIIUUU -> MIIUIIU [label = uu,  color = orangered,   labelfontcolor = orangered];
@@ -195,12 +212,19 @@ digraph G {
 	MIUIIIIIIU -> MIUUIIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIIU -> MIUIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIIU -> MIUUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIUIIIIUIII -> MIUIIIIUIIIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MIUIIIIUIII -> MIUIIIIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIIUIII -> MIUIUUIII [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIIUIII -> MIUUIUIII [label = iii, color = orange,      labelfontcolor = orange];
+	MIUIIIIUIIIU -> MIUIIIIUUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIUIIIIUIIIU -> MIUIUUIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MIUIIIIUIIIU -> MIUUIUIIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIIUU -> MIUIIII [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MIUIIIIUU -> MIUIUUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIIUU -> MIUUIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIUIIIIUUU -> MIUIIIIU [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MIUIIIIUUU -> MIUIUUUU [label = iii, color = orange,      labelfontcolor = orange];
+	MIUIIIIUUU -> MIUUIUUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIU -> MIUUU [label = iii, color = orange,      labelfontcolor = orange];
 	MIUIIIUU -> MIUIII [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MIUIIIUU -> MIUUUU [label = iii, color = orange,      labelfontcolor = orange];
@@ -298,12 +322,23 @@ digraph G {
 	MUIIIIIU -> MUUIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIU -> MUIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIU -> MUUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUI -> MUIIIIUIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MUIIIIUI -> MUIUUI [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUI -> MUUIUI [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUIIII -> MUIIIIUIIIIU [label = pu,  color = green4,      labelfontcolor = green4];
 	MUIIIIUIIII -> MUIIIIUIU [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIUIIII -> MUIIIIUUI [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIUIIII -> MUIUUIIII [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIUIIII -> MUUIUIIII [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUIIIIU -> MUIIIIUIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUIIIIU -> MUIIIIUUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUIIIIU -> MUIUUIIIIU [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUIIIIU -> MUUIUIIIIU [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIUIU -> MUIUUIU [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIUIU -> MUUIUIU [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUIUU -> MUIIIIUI [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MUIIIIUIUU -> MUIUUIUU [label = iii, color = orange,      labelfontcolor = orange];
+	MUIIIIUIUU -> MUUIUIUU [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIUU -> MUIIII [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUIIIIUU -> MUIUUU [label = iii, color = orange,      labelfontcolor = orange];
 	MUIIIIUU -> MUUIUU [label = iii, color = orange,      labelfontcolor = orange];
@@ -362,6 +397,9 @@ digraph G {
 	MUIUUIUIIU -> MUIIUIIU [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUIUUIUIUUI -> MUIIUIUUI [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUIUUIUIUUI -> MUIUUIUII [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MUIUUIUIUUI -> MUIUUIUIUUIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MUIUUIUIUUIU -> MUIIUIUUIU [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MUIUUIUIUUIU -> MUIUUIUIIU [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUIUUIUU -> MUIIUU [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUIUUIUU -> MUIUUI [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUIUUIUUU -> MUIIUUU [label = uu,  color = orangered,   labelfontcolor = orangered];
@@ -428,6 +466,9 @@ digraph G {
 	MUUIUIUU -> MUUIUI [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUUIUIUUIUI -> MIUIUUIUI [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUUIUIUUIUI -> MUUIUIIUI [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MUUIUIUUIUI -> MUUIUIUUIUIU [label = pu,  color = green4,      labelfontcolor = green4];
+	MUUIUIUUIUIU -> MIUIUUIUIU [label = uu,  color = orangered,   labelfontcolor = orangered];
+	MUUIUIUUIUIU -> MUUIUIIUIU [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUUIUU -> MIUU [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUUIUU -> MUUI [label = uu,  color = orangered,   labelfontcolor = orangered];
 	MUUIUU -> MUUIUUUUIUU [label = mx,  color = greenyellow, labelfontcolor = greenyellow];

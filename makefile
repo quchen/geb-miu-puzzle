@@ -11,11 +11,16 @@ graphviz : generator
 	./GraphGenerator 10 | dot -Tpng > $(OUT)/miu10.png &
 	./GraphGenerator 11 | dot -Tpng > $(OUT)/miu11.png &
 
-graphvizdot : generator
-	./GraphGenerator 8  > $(OUT)/miu8.gv.dot  &
-	./GraphGenerator 9  > $(OUT)/miu9.gv.dot  &
-	./GraphGenerator 10 > $(OUT)/miu10.gv.dot &
-	./GraphGenerator 11 > $(OUT)/miu11.gv.dot &
+dot : generator
+	./GraphGenerator 8  > $(OUT)/miu8.export.dot  &
+	./GraphGenerator 9  > $(OUT)/miu9.export.dot  &
+	./GraphGenerator 10 > $(OUT)/miu10.export.dot &
+	./GraphGenerator 11 > $(OUT)/miu11.export.dot &
+	./GraphGenerator 12 > $(OUT)/miu12.export.dot &
+	./GraphGenerator 13 > $(OUT)/miu13.export.dot &
+	./GraphGenerator 14 > $(OUT)/miu14.export.dot &
+	./GraphGenerator 15 > $(OUT)/miu15.export.dot &
+	./GraphGenerator 16 > $(OUT)/miu16.export.dot &
 
 clean :
 	find ./src -name "*.hi" -delete

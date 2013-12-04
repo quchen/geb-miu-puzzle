@@ -13,5 +13,5 @@ main :: IO ()
 main = do
       args <- getArgs
       case listToMaybe args >>= readMaybe of
-            Just limit -> (putStrLn . gvDot) (growAll limit gebStartGraph)
+            Just limit -> (putStrLn . exportDot) (growAll limit gebStartGraph)
             _ -> putStrLn "Expecting Int parameter for maximum word length"
