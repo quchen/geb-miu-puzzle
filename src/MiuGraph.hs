@@ -1,6 +1,6 @@
 module MiuGraph (
         growAll
-      , gebStartGraph
+      , gebStart
       , Graph (..)
       , Edge (..)
       , Node
@@ -13,19 +13,20 @@ import Data.Monoid
 
 import Miu
 
--- | A graph consists of:
---
---   1. A set of unvisited nodes
---   2. A set of already visited nodes
---   3. A set of edges
-data Graph = Graph (Set Node)
-                   (Set Node)
-                   (Set Edge)
+-- | A graph is defined by the set of its edges only. (Since the MIU graph is
+--   connected, this doesn't constrain the set of solutions.)
+data Graph = Graph (Set Edge)
       deriving (Eq, Ord, Show)
 
 type Node = MiuExpr
 data Edge = Edge Node Node Rule
       deriving (Eq, Ord, Show)
+
+-- | Memoizing version of a graph. Consists of:
+--     1. A set of unvisited nodes
+--     2. A set of already visited nodes
+--     3. A set of edges
+type GraphMemo = (Set Node, Set Node, Graph)
 
 
 
@@ -35,9 +36,12 @@ growNode from = Set.map toEdge (ruleAll from)
       where toEdge (miu, rule) = Edge from miu rule
 
 
--- | Grow each unvisited node in a graph
-growGraph :: Int -> Graph -> Graph
-growGraph limit (Graph unvisited visited edges) = Graph unvisited' visited' edges'
+-- | Grow each unvisited node in the graph
+growOnce :: Int -- ^ Maximum word length (example: MIIUU = 5)
+         -> GraphMemo
+         -> GraphMemo
+growOnce limit (unvisited,  visited,  Graph edges ) =
+               (unvisited', visited', Graph edges')
       where
             -- New edges: grow all nodes and flatten the structure
             edges' = edges <> newEdges
@@ -55,9 +59,19 @@ growGraph limit (Graph unvisited visited edges) = Graph unvisited' visited' edge
 
 
 -- | Grow a graph until no unvisited nodes remain
-growAll limit g = let g'@(Graph n _ _ ) = growGraph limit g
-                  in  if Set.null n then g' else growAll limit g'
+growAll :: Int -- ^ Maximum word length (example: MIIUU = 5)
+        -> GraphMemo
+        -> Graph
+growAll limit gg =
+      case growOnce limit gg of
+            (unvisited', _, g) | Set.null unvisited' -> g
+            gg' -> growAll limit gg'
+
 
 
 -- | Starting point of the book's puzzle
-gebStartGraph = Graph (Set.singleton (MiuExpr [M,I])) Set.empty Set.empty
+gebStart :: GraphMemo
+gebStart = (unvisited, visited, graph)
+      where unvisited = Set.singleton (MiuExpr [M,I])
+            visited = Set.empty
+            graph = Graph Set.empty

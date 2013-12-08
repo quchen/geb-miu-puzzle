@@ -12,7 +12,7 @@ import MiuGraph
 
 
 graphToDot :: (Rule -> String) -> Graph -> String
-graphToDot ruleToDot (Graph _ _ edges) =
+graphToDot ruleToDot (Graph edges) =
       F.fold (Set.map (edgeToDot ruleToDot) edges)
 
 
