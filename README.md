@@ -3,6 +3,8 @@ GEB MIU-puzzle graphs
 
 (Initially written around the end of 2012.)
 
+![(Picture missing, uh oh)](out/miu8.png)
+
 The problem
 -----------
 
